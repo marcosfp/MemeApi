@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <link rel=“shortcut icon” type=“image/x-icon” href="/favicon.ico">
+  <meta charset="utf-8"/>
+  <title>dameMemeAPI</title>
+  <link rel="stylesheet" href="static/bootstrap.min.css">
+  <script src="static/jquery-3.6.3.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
+    integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="static/funciones.js"></script>
+
+  <style>
+    #left_menu {
+      width: 50%;
+      height: 100%;
+      display: block;
+      float: left;
+    }
+
+    #main_wrapper {
+      width: 50%;
+      height: 100%;
+      display: block;
+      float: left;
+      background-color: aquamarine;
+    }
+
+    .span_get {
+      padding: 5px;
+      background-color: #3CB371;
+      border-radius: 10px;
+      color: white;
+
+    }
+
+    .span_post {
+      padding: 5px;
+      background-color: #6495ED;
+      border-radius: 10px;
+      color: white;
+
+    }
+
+    .span_put {
+      padding: 5px;
+      background-color: #DAA520;
+      border-radius: 10px;
+      color: white;
+    }
+
+    .span_delete {
+      padding: 5px;
+      background-color: #B22222;
+      border-radius: 10px;
+      color: white;
+    }
+
+    .meme-generator {
+  margin: 20px auto;
+  width: 400px;
+  font-family: sans-serif;
+}
+
+.meme-generator label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.meme-generator input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+
+#meme {
+  width: 100%;
+}
+
+canvas{
+  width: 90%;
+}
+
+
+  </style>
+
+
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">dameMemeAPI.-Tester</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01"
+        aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    </div>
+  </nav>
+  <div id="left_menu">
+    <div id="accordion">
+      <div class="card">
+        <div class="card-header" id="headingTwo">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#obtenerMeme"
+              aria-expanded="false" aria-controls="collapseTwo">
+              <span class="span_get">GET /meme?id=</span> Obtener Meme por id
+            </button>
+          </h5>
+        </div>
+        <div id="obtenerMeme" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div class="card-body">
+            Para obtner un meme solo será necesario especificar el identificador del meme que quereemos obtner como
+            parámetro de la petición GET.
+            <br>
+            <br>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">https://damemeapi.000webhostapp.com/meme</span>
+              </div>
+              <div class="input-group-append">
+                <span class="input-group-text" id="basic-addon2">?id=</span>
+              </div>
+              <input type="number" id="obtenerMemePorId_id" min="1" class="form-control" placeholder="id del meme"
+                aria-label="id del meme" aria-describedby="basic-addon2">
+
+              <div class="input-group-append">
+                <button id="obtenerMemePorId" class="btn btn-outline-secondary" type="button">Enviar</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#obtenerMemesLista"
+              aria-expanded="false" aria-controls="collapseOne">
+              <span class="span_get">GET /meme/list</span> Obtener Memes
+            </button>
+          </h5>
+        </div>
+
+        <div id="obtenerMemesLista" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            Para obtener todos los memes es necesario realizar una peticion <span class="span_get">GET </span> MEME. Por
+            defecto cargará 10 resultados. Si el usuario necesitase más resultados sería necesario modificar el
+            parametro count de la petcion.
+            Asi como es pisible modficar la página de los resultados indicando que página. Es decir si queremos mostrar
+            count=10 y page=2 mostrará los resultados del 10 al 20.
+            <br>
+            <h5>Parametros de la peticion:</h5>
+            <span class="span_get">GET /meme/list</span>
+            <br>
+            <b>count</b> integer número de resultados a mostrar
+            <br>
+            <b>page</b> integer página de resultados
+            <br>
+            <br>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon3">https://damemeapi.000webhostapp.com/meme</span>
+              </div>
+              <select id="obtenerMemes_page" class="custom-select" id="inputGroupSelect02">
+                <option selected>?page=</option>
+                <option value="0">?page=0</option>
+                <option value="1">?page=1</option>
+                <option value="2">?page=2</option>
+                <option value="3">?page=3</option>
+                <option value="4">?page=4</option>
+                <option value="5">?page=5</option>
+              </select>
+              <select id="obtenerMemes_count" class="custom-select" id="inputGroupSelect02">
+                <option selected>?count=</option>
+                <option value="0">?count=0</option>
+                <option value="1">?count=1</option>
+                <option value="2">?count=2</option>
+                <option value="3">?count=3</option>
+                <option value="4">?count=4</option>
+                <option value="5">?count=5</option>
+
+              </select>
+              <div class="input-group-append">
+                <button id="obtenerMemes" class="btn btn-outline-secondary" type="button">Enviar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#crearMeme" aria-expanded="false"
+              aria-controls="collapseThree">
+              <span class="span_post">POST /meme</span> Crear Meme
+            </button>
+          </h5>
+        </div>
+        <div id="crearMeme" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+          <div class="card-body">
+            Para crear un meme es necesario hacer una peticon POST con los diversos parámetros que componen un meme:
+            <form>
+              <div class="form-group">
+                <span class="span_post">POST /meme</span>
+                <br>                <br>
+
+                
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_crearMeme_nombre">nombre del Meme</span>
+                  </div>
+                  <input type="text" class="form-control" id="crearMeme_nombre" placeholder="Ejemplo: Ocio"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_crearMeme_tSuperior">Titulo Superior</span>
+                  </div>
+                  <input type="text" class="form-control" id="crearMeme_tSuperior" placeholder="Texto 1"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_crearMeme_tInferior">Titulo inferior</span>
+                  </div>
+                  <input type="text" class="form-control" id="crearMeme_tInferior" placeholder="Texto 2"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_crearMeme_url">Url del Meme</span>
+                  </div>
+                  <input type="text" class="form-control" id="crearMeme_url" placeholder="Url del meme"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_crearMeme_tags">Tags del meme</span>
+                  </div>
+                  <input type="text" class="form-control" id="crearMeme_tags" placeholder="Id del Tags separados por comas simples"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+              </div>
+
+
+              <button type="button" id="crearMeme_boton" class="btn btn-primary">Crear Meme</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#editarMeme"
+              aria-expanded="false" aria-controls="collapseThree">
+              <span class="span_put">PUT /meme</span> Editar Meme
+            </button>
+          </h5>
+        </div>
+        <div id="editarMeme" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+          <div class="card-body">
+            <form>
+              <div class="form-group">
+                Para editar un meme hareos uso de un método <span class="span_put">PUT /meme</span> y añadiendo todas los atributos que componene un meme.
+                <br>                <br>
+
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_editarMeme_id">Id del meme</span>
+                  </div>
+                  <input type="text" class="form-control" id="editarMeme_id" placeholder="Identificador numérico del meme"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_editarMeme_nombre">nombre del Meme</span>
+                  </div>
+                  <input type="text" class="form-control" id="editarMeme_nombre" placeholder="Ejemplo: Ocio"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_editarMeme_tSuperior">Titulo Superior</span>
+                  </div>
+                  <input type="text" class="form-control" id="editarMeme_tSuperior" placeholder="Texto 1"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_editarMeme_tInferior">Titulo inferior</span>
+                  </div>
+                  <input type="text" class="form-control" id="editarMeme_tInferior" placeholder="Texto 2"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_editarMeme_url">Url del Meme</span>
+                  </div>
+                  <input type="text" class="form-control" id="editarMeme_url" placeholder="Url del meme"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_editarMeme_tags">Tags del meme</span>
+                  </div>
+                  <input type="text" class="form-control" id="editarMeme_tags" placeholder="Id del Tags separados por comas simples"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+              </div>
+
+
+              <button type="button" id="editarMeme_boton" class="btn btn-primary">Editar Meme</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#obtenerTagLista"
+              aria-expanded="false" aria-controls="collapseThree">
+              <span class="span_get">GET /tag/list</span> Obtener lista de Tags
+            </button>
+          </h5>
+        </div>
+        <div id="obtenerTagLista" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+          <div class="card-body">
+            Obtiene toda la lista de Tags.
+            <br>
+            <form>
+              <div class="form-group">
+                <span class="span_get">GET /tag/list</span>
+                <br>
+                <label for="crearTag_nombreTag">Nombre Tag</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon3">https://damemeapi.000webhostapp.com/tag</span>
+                  </div>
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">/list</span>
+                  </div>
+
+                  <div class="input-group-append">
+                    <button id="obtenerTagLista" class="btn btn-outline-secondary" type="button">Enviar</button>
+                  </div>
+                </div>
+              </div>
+
+
+            </form>
+
+
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#crearTag" aria-expanded="false"
+              aria-controls="collapseThree">
+              <span class="span_post">POST /tag</span> Crear Tag
+            </button>
+          </h5>
+        </div>
+        <div id="crearTag" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+          <div class="card-body">
+            Para crear tag solo necesitamos un text para nuestro Tag y que este sea único.
+            <br>
+            <form>
+              <div class="form-group">
+                <span class="span_post">POST /tag</span>
+                <br>
+                <label for="crearTag_nombreTag">Nombre Tag</label>
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="span_crearTag_nombreTag">nombre del Tag</span>
+                  </div>
+                  <input type="text" class="form-control" id="crearTag_nombreTag" placeholder="Ejemplo: Ocio"
+                    aria-label="Username" aria-describedby="basic-addon1">
+                </div>
+              </div>
+
+
+              <button type="button" id="crearTag_boton" class="btn btn-primary">Crear Tag</button>
+            </form>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+  <div id="main_wrapper">
+    <div id="memeHolder"></div>
+  </div>
+
+
+
+
+
+
+</html>
